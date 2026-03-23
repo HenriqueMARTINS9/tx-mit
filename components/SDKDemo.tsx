@@ -35,7 +35,6 @@ type EventItem = {
 
 type ControlButtonProps = {
   label: string;
-  hint: string;
   onClick: () => void;
   disabled: boolean;
   tone?: "primary" | "secondary";
@@ -46,7 +45,6 @@ const equalizerBars = [0, 1, 2, 3, 4, 5];
 
 function ControlButton({
   label,
-  hint,
   onClick,
   disabled,
   tone = "secondary"
@@ -61,12 +59,9 @@ function ControlButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`group min-h-[56px] w-full rounded-[20px] border px-4 py-4 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${toneClasses}`}
+      className={`group flex min-h-[54px] w-full items-center justify-center rounded-[18px] border px-3 py-3 text-center transition disabled:cursor-not-allowed disabled:opacity-50 ${toneClasses}`}
     >
       <span className="block text-sm font-semibold">{label}</span>
-      <span className="mt-1 block text-xs uppercase tracking-[0.22em] text-slate-400 transition group-hover:text-slate-300">
-        {hint}
-      </span>
     </button>
   );
 }
@@ -231,72 +226,47 @@ export function SDKDemo() {
       title="Intégration SDK"
       description="Contrôle total mais remplace l'expérience mobile native."
       footer={
-        <div className="grid gap-3">
-          <div className="rounded-[22px] border border-white/10 bg-white/5 px-4 py-3">
-            <span className="block text-xs uppercase tracking-[0.22em] text-slate-400">
-              État
-            </span>
-            <span className="mt-2 block text-sm font-medium text-white">
-              {statusLabel}
-            </span>
-          </div>
-          <div className="rounded-[22px] border border-white/10 bg-white/5 px-4 py-3">
-            <span className="block text-xs uppercase tracking-[0.22em] text-slate-400">
-              Temps Actuel
-            </span>
-            <span className="mt-2 block text-sm font-medium text-white">
-              {formatTime(currentTime)}
-            </span>
-          </div>
-          <div className="rounded-[22px] border border-white/10 bg-white/5 px-4 py-3">
-            <span className="block text-xs uppercase tracking-[0.22em] text-slate-400">
-              Compromis
-            </span>
-            <span className="mt-2 block text-sm font-medium text-white">
-              Interface web, pas native OS
-            </span>
-          </div>
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
+            Contrôle avancé
+          </span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
+            UI web personnalisée
+          </span>
+          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
+            Pas de lecteur natif OS
+          </span>
         </div>
       }
     >
-      <div className="rounded-[24px] border border-emerald-300/15 bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.2),_transparent_40%),linear-gradient(180deg,rgba(6,78,59,0.2),rgba(2,6,23,0.1))] p-2.5 shadow-[0_18px_50px_rgba(16,185,129,0.14)] sm:rounded-[28px] sm:p-3">
-        <div className="rounded-[22px] border border-white/10 bg-slate-950/95 p-2.5 sm:rounded-[24px] sm:p-3">
-          <div className="mb-3 flex flex-col items-start gap-3 rounded-[18px] border border-white/10 bg-white/[0.03] px-4 py-3">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-rose-300/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-300/80" />
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-300/80" />
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">
-                  Console SDK
-                </p>
-                <p className="mt-1 text-sm text-white">Interface du lecteur pilotée en JS</p>
-              </div>
+      <div className="rounded-[24px] border border-emerald-300/15 bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.18),_transparent_42%),linear-gradient(180deg,rgba(6,78,59,0.16),rgba(2,6,23,0.1))] p-2.5 shadow-[0_18px_50px_rgba(16,185,129,0.14)] sm:rounded-[28px] sm:p-3">
+        <div className="rounded-[22px] border border-white/10 bg-slate-950/95 p-3 sm:rounded-[24px]">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">
+                Console SDK
+              </p>
+              <p className="mt-1 text-sm text-white">Lecteur web piloté en JavaScript</p>
             </div>
-            <div className="flex w-full flex-wrap items-center gap-2">
-              <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-emerald-50">
-                {isReady ? "Lecteur Prêt" : "Démarrage"}
+            <div className="flex flex-wrap gap-2">
+              <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-50">
+                {statusLabel}
               </span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-slate-300">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-300">
                 {eventCountLabel}
               </span>
             </div>
           </div>
 
-          <div className="sdk-player relative overflow-hidden rounded-[24px] border border-white/10 bg-black">
+          <div className="sdk-player relative overflow-hidden rounded-[22px] border border-white/10 bg-black">
             <div ref={playerHostRef} className="aspect-video" />
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.04),rgba(15,23,42,0.25)),radial-gradient(circle_at_top,_rgba(52,211,153,0.14),_transparent_36%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.02),rgba(15,23,42,0.18)),radial-gradient(circle_at_top,_rgba(52,211,153,0.1),_transparent_30%)]" />
             <div className="pointer-events-none absolute left-3 top-3 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/10 bg-slate-950/75 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-200">
-                UI pilotée par le SDK
-              </span>
-              <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-50">
-                {statusLabel}
+              <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-100">
+                UI SDK
               </span>
             </div>
-            <div className="pointer-events-none absolute right-3 top-3 hidden items-end gap-1 rounded-full border border-white/10 bg-slate-950/70 px-3 py-2 sm:flex">
+            <div className="pointer-events-none absolute right-3 top-3 hidden items-end gap-1 rounded-full border border-white/10 bg-slate-950/65 px-3 py-2 sm:flex">
               {equalizerBars.map((bar) => (
                 <span
                   key={bar}
@@ -305,91 +275,61 @@ export function SDKDemo() {
                 />
               ))}
             </div>
-            <div className="pointer-events-none absolute inset-x-3 bottom-3 rounded-[20px] border border-white/10 bg-slate-950/75 px-4 py-3 backdrop-blur">
-              <div className="flex items-center justify-between gap-3 text-[11px] font-medium uppercase tracking-[0.24em] text-slate-300">
+            <div className="pointer-events-none absolute inset-x-2 bottom-2 rounded-[16px] border border-white/10 bg-slate-950/65 px-3 py-2 backdrop-blur">
+              <div className="flex items-center justify-between gap-3 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-200">
                 <span>Progression</span>
-                <span>
+                <span className="text-slate-100">
                   {formatTime(currentTime)} / {formatTime(duration)}
                 </span>
               </div>
-              <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
                 <div
-                  className="h-full rounded-full bg-[linear-gradient(90deg,rgba(167,243,208,0.95),rgba(16,185,129,0.9),rgba(20,184,166,0.9))] shadow-[0_0_22px_rgba(52,211,153,0.55)] transition-[width] duration-300"
+                  className="h-full rounded-full bg-[linear-gradient(90deg,rgba(167,243,208,0.95),rgba(16,185,129,0.9),rgba(20,184,166,0.9))] shadow-[0_0_18px_rgba(52,211,153,0.45)] transition-[width] duration-300"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="mt-5 grid gap-4">
-        <div className="rounded-[24px] border border-white/10 bg-[linear-gradient(180deg,rgba(16,185,129,0.08),rgba(255,255,255,0.02))] p-4">
-          <div className="flex flex-col items-start gap-4">
-            <div>
-              <h3 className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-400">
-                Panneau De Contrôle
-              </h3>
-              <p className="mt-2 max-w-sm text-sm leading-6 text-slate-300">
-                C'est la partie que vous contrôlez avec un SDK : état du lecteur,
-                boutons, progression et interactions spécifiques au produit.
-              </p>
-            </div>
-            <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-slate-300">
-              Piloté En JS
-            </span>
-          </div>
-
-          <div className="mt-4 grid gap-3">
+          <div className="mt-3 grid grid-cols-3 gap-2">
             <ControlButton
               label="Lecture"
-              hint="Lancer"
               onClick={() => void playVideo()}
               disabled={!isReady}
               tone="primary"
             />
-            <ControlButton
-              label="Pause"
-              hint="Suspendre"
-              onClick={pauseVideo}
-              disabled={!isReady}
-            />
-            <ControlButton
-              label="Rejouer"
-              hint="Relancer"
-              onClick={restartVideo}
-              disabled={!isReady}
-            />
+            <ControlButton label="Pause" onClick={pauseVideo} disabled={!isReady} />
+            <ControlButton label="Rejouer" onClick={restartVideo} disabled={!isReady} />
           </div>
 
-          <div className="mt-4 grid gap-3">
-            <div className="rounded-[20px] border border-white/10 bg-slate-950/60 px-4 py-3">
-              <span className="block text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-                État De Lecture
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                État
               </span>
-              <span className="mt-2 block text-base font-semibold text-white">
-                {statusLabel}
-              </span>
+              <span className="mt-1 block text-sm font-semibold text-white">{statusLabel}</span>
             </div>
-            <div className="rounded-[20px] border border-white/10 bg-slate-950/60 px-4 py-3">
-              <span className="block text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
-                Écoulé
+            <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                Temps
               </span>
-              <span className="mt-2 block text-base font-semibold text-white">
+              <span className="mt-1 block text-sm font-semibold text-white">
                 {formatTime(currentTime)}
               </span>
             </div>
-            <div className="rounded-[20px] border border-white/10 bg-slate-950/60 px-4 py-3">
-              <span className="block text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400">
+            <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
                 Durée
               </span>
-              <span className="mt-2 block text-base font-semibold text-white">
+              <span className="mt-1 block text-sm font-semibold text-white">
                 {formatTime(duration)}
               </span>
             </div>
           </div>
         </div>
+      </div>
 
+      <div className="mt-4 grid gap-4">
         <div className="rounded-[24px] border border-white/10 bg-black/20 p-4">
           <div className="mb-3 flex flex-col items-start gap-3">
             <div>
