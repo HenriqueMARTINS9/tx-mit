@@ -55,12 +55,6 @@ const comparisonRows = [
   }
 ];
 
-const quickTakeaways = [
-  "iFrame pour aller vite",
-  "SDK pour tout piloter",
-  "Natif pour la meilleure UX mobile"
-];
-
 export function ComparisonSection() {
   return (
     <section id="comparaison" className="mobile-section mx-auto mt-10 max-w-4xl px-4 sm:px-6">
@@ -73,30 +67,12 @@ export function ComparisonSection() {
             Comparez les trois approches dans un vrai tableau.
           </h2>
           <p className="mt-4 text-sm leading-6 text-slate-300">
-            Plus pratique en démo client : chaque critère reste aligné, et sur mobile le
-            tableau se parcourt horizontalement sans casser la lecture.
+            Chaque critère reste aligné pour rendre la comparaison immédiate pendant une
+            démo client.
           </p>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-2">
-          {quickTakeaways.map((takeaway) => (
-            <span
-              key={takeaway}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300"
-            >
-              {takeaway}
-            </span>
-          ))}
-        </div>
-
         <div className="mt-8 overflow-hidden rounded-[26px] border border-white/10 bg-slate-950/50">
-          <div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-3 text-xs uppercase tracking-[0.22em] text-slate-400">
-            <span>Tableau comparatif</span>
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-slate-300">
-              Glisser horizontalement
-            </span>
-          </div>
-
           <div className="no-scrollbar overflow-x-auto">
             <table aria-label="Tableau comparatif vidéo" className="min-w-[760px] w-full">
               <thead>
