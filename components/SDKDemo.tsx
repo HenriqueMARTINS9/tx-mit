@@ -314,7 +314,7 @@ export function SDKDemo() {
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
       >
-        <div className="rounded-[22px] border border-white/10 bg-slate-950/95 p-3 sm:rounded-[24px]">
+       
           <div
             className={`overflow-hidden transition-all duration-200 ${
               showPlayerUi ? "mb-3 max-h-32 opacity-100" : "mb-0 max-h-0 opacity-0"
@@ -430,7 +430,7 @@ export function SDKDemo() {
               </div>
             </div>
           </div>
-        </div>
+        
       </div>
 
       <div className="mt-4 grid gap-4">
