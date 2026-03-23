@@ -21,7 +21,7 @@ export function NativeVideoDemo() {
       accent="amber"
       eyebrow="Approche 3"
       title="Lecteur Mobile Natif"
-      description="Meilleure UX mobile avec les contrôles natifs (iOS / Android)."
+      description="Chez TX-MIT, c'est notre option privilégiée dès que l'expérience mobile doit rester fluide, familière et robuste."
       badge={<MobileExperienceBadge />}
       footer={
         <div className="grid gap-3">
@@ -64,10 +64,10 @@ export function NativeVideoDemo() {
       </div>
 
       <div className="mt-5 rounded-[24px] border border-amber-200/15 bg-amber-300/10 p-4 text-sm leading-6 text-amber-50/90">
-        Gardez cette version native : pas de contrôles personnalisés, pas d'interface
-        SDK, uniquement l'UI vidéo mobile par défaut afin qu'iOS Safari et Android
-        Chrome utilisent naturellement leur lecteur intégré, le plein écran et la
-        rotation de l'appareil.
+        Chez TX-MIT, nous privilégions cette approche dès qu'un usage mobile réel est au
+        centre du projet : pas de contrôles custom, pas d'interface SDK, uniquement
+        l'UI vidéo native pour laisser iOS Safari et Android Chrome gérer naturellement
+        le lecteur, le plein écran et la rotation.
       </div>
     </SectionCard>
   );

@@ -3,9 +3,9 @@ import "video.js/dist/video-js.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Démo d'intégration vidéo",
+  title: "TX-MIT | Architecture vidéo",
   description:
-    "Une démo client qui compare l'intégration iframe, SDK et la lecture vidéo mobile native avec Next.js."
+    "Chez TX-MIT, nous comparons iframe, SDK et lecture native mobile pour recommander l'architecture vidéo adaptée."
 };
 
 export default function RootLayout({

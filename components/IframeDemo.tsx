@@ -1,6 +1,6 @@
 import { SectionCard } from "@/components/SectionCard";
 
-const talkingPoints = ["Rapide à lancer", "Contrôle limité", "Pas d'UX mobile native"];
+const talkingPoints = ["Bon pour cadrer vite", "Peu de contrôle produit", "UX mobile non native"];
 
 export function IframeDemo() {
   return (
@@ -9,7 +9,7 @@ export function IframeDemo() {
       accent="sky"
       eyebrow="Approche 1"
       title="Intégration iFrame"
-      description="Intégration rapide mais contrôle limité et aucune expérience mobile native."
+      description="Chez TX-MIT, nous retenons l'iFrame pour prototyper vite, avec un contrôle limité et sans véritable expérience mobile native."
       footer={
         <div className="flex flex-wrap gap-2">
           {talkingPoints.map((point) => (
@@ -40,21 +40,21 @@ export function IframeDemo() {
           <span className="block text-xs uppercase tracking-[0.22em] text-slate-400">
             Mise En Place
           </span>
-          <span className="mt-2 block text-sm font-medium text-white">Très rapide</span>
+          <span className="mt-2 block text-sm font-medium text-white">La plus simple</span>
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
           <span className="block text-xs uppercase tracking-[0.22em] text-slate-400">
             Contrôle
           </span>
           <span className="mt-2 block text-sm font-medium text-white">
-            Limité au fournisseur
+            Très limité
           </span>
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
           <span className="block text-xs uppercase tracking-[0.22em] text-slate-400">
             UX Mobile
           </span>
-          <span className="mt-2 block text-sm font-medium text-white">Non native</span>
+          <span className="mt-2 block text-sm font-medium text-white">Fournisseur standard</span>
         </div>
       </div>
     </SectionCard>

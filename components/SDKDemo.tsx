@@ -40,7 +40,7 @@ type ControlButtonProps = {
   tone?: "primary" | "secondary";
 };
 
-const capabilityPills = ["UI personnalisée", "API JS", "Hooks d'événements", "État du lecteur"];
+const capabilityPills = ["Pilotage UI", "API player", "Événements", "Télémétrie"];
 const equalizerBars = [0, 1, 2, 3, 4, 5];
 
 function ControlButton({
@@ -291,17 +291,17 @@ export function SDKDemo() {
       accent="emerald"
       eyebrow="Approche 2"
       title="Intégration SDK"
-      description="Contrôle total mais remplace l'expérience mobile native."
+      description="Chez TX-MIT, nous activons cette approche quand le produit demande une interface sur mesure, des événements riches et un pilotage fin du player."
       footer={
         <div className="flex flex-wrap gap-2">
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
-            Contrôle avancé
+            Notre couche de contrôle
           </span>
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
-            UI web personnalisée
+            Interface sur mesure
           </span>
           <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-300">
-            Pas de lecteur natif OS
+            Non natif sur mobile
           </span>
         </div>
       }
@@ -323,9 +323,11 @@ export function SDKDemo() {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">
-                  Console SDK
+                  Console SDK TX-MIT
                 </p>
-                <p className="mt-1 text-sm text-white">Lecteur web piloté en JavaScript</p>
+                <p className="mt-1 text-sm text-white">
+                  Pilotage du player, de l'interface et de l'état en JavaScript
+                </p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-50">

@@ -52,6 +52,12 @@ const comparisonRows = [
     iframe: "Embed rapide pour une démo",
     sdk: "Produit interactif ou branding fort",
     natif: "Expérience mobile premium"
+  },
+  {
+    criterion: "Lecture TX-MIT",
+    iframe: "Bon point d'entrée pour aller vite",
+    sdk: "À privilégier si l'interface doit être pilotée finement",
+    natif: "Notre choix dès que le mobile est stratégique"
   }
 ];
 
@@ -61,14 +67,14 @@ export function ComparisonSection() {
       <div className="rounded-[30px] border border-white/10 bg-slate-950/70 p-5 shadow-panel backdrop-blur sm:rounded-[32px] sm:p-6">
         <div className="max-w-3xl">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-400 sm:text-xs sm:tracking-[0.26em]">
-            Comparaison Rapide
+            Notre Lecture TX-MIT
           </p>
           <h2 className="mt-3 text-xl font-semibold text-white sm:text-3xl">
-            Comparez les trois approches dans un vrai tableau.
+            Voici comment nous arbitrons le sujet avec nos clients.
           </h2>
           <p className="mt-4 text-[13px] leading-5 text-slate-300 sm:text-sm sm:leading-6">
-            Chaque critère reste aligné pour rendre la comparaison immédiate pendant une
-            démo client.
+            Ce tableau reflète la manière dont nous comparons ces trois approches chez
+            TX-MIT : vitesse, contrôle, UX mobile et niveau de personnalisation.
           </p>
         </div>
 
