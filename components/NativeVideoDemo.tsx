@@ -17,6 +17,7 @@ export function NativeVideoDemo() {
 
   return (
     <SectionCard
+      id="natif"
       accent="amber"
       eyebrow="Approche 3"
       title="Lecteur Mobile Natif"

@@ -18,16 +18,16 @@ const comparisonItems = [
 
 export function ComparisonSection() {
   return (
-    <section className="mx-auto mt-10 max-w-4xl px-6">
-      <div className="rounded-[32px] border border-white/10 bg-slate-950/70 p-6 shadow-panel backdrop-blur">
+    <section id="comparaison" className="mobile-section mx-auto mt-10 max-w-4xl px-4 sm:px-6">
+      <div className="rounded-[30px] border border-white/10 bg-slate-950/70 p-5 shadow-panel backdrop-blur sm:rounded-[32px] sm:p-6">
         <div className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-400">
             Comparaison Rapide
           </p>
-          <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+          <h2 className="mt-3 text-2xl font-semibold text-white sm:text-3xl">
             Choisissez l'approche qui correspond à l'objectif produit.
           </h2>
-          <p className="mt-4 text-sm leading-6 text-slate-300 sm:text-base">
+          <p className="mt-4 text-sm leading-6 text-slate-300">
             Cette section permet à un client de comprendre les compromis en un coup
             d'œil, pendant une démo live ou sur un écran de téléphone.
           </p>
@@ -37,7 +37,7 @@ export function ComparisonSection() {
           {comparisonItems.map((item) => (
             <article
               key={item.title}
-              className="rounded-[26px] border border-white/10 bg-white/5 p-5"
+              className="rounded-[24px] border border-white/10 bg-white/5 p-4 sm:rounded-[26px] sm:p-5"
             >
               <span
                 className={`inline-flex rounded-full border px-3 py-2 text-xs font-medium uppercase tracking-[0.22em] ${item.accent}`}

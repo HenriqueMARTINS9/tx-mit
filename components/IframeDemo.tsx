@@ -5,6 +5,7 @@ const talkingPoints = ["Rapide à lancer", "Contrôle limité", "Pas d'UX mobile
 export function IframeDemo() {
   return (
     <SectionCard
+      id="iframe"
       accent="sky"
       eyebrow="Approche 1"
       title="Intégration iFrame"

@@ -25,6 +25,19 @@ body {
   font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
 }
 
+.app-shell {
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+.mobile-section {
+  scroll-margin-top: calc(5.5rem + env(safe-area-inset-top));
+}
+
+.sticky-mobile-nav {
+  position: sticky;
+  top: calc(0.75rem + env(safe-area-inset-top));
+}
+
 h1,
 h2,
 h3,
@@ -86,4 +99,13 @@ h4 {
 .sdk-eq-bar {
   transform-origin: bottom;
   animation: sdkLevel 1.2s ease-in-out infinite;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

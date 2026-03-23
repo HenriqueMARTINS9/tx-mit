@@ -9,6 +9,7 @@ const accentClasses: Record<Accent, string> = {
 };
 
 type SectionCardProps = {
+  id?: string;
   accent: Accent;
   eyebrow: string;
   title: string;
@@ -19,6 +20,7 @@ type SectionCardProps = {
 };
 
 export function SectionCard({
+  id,
   accent,
   eyebrow,
   title,
@@ -28,21 +30,26 @@ export function SectionCard({
   footer
 }: SectionCardProps) {
   return (
-    <section className="relative overflow-hidden rounded-[30px] border border-white/10 bg-slate-950/75 p-6 shadow-panel backdrop-blur xl:p-7">
+    <section
+      id={id}
+      className="mobile-section relative overflow-hidden rounded-[30px] border border-white/10 bg-slate-950/75 p-5 shadow-panel backdrop-blur sm:p-6"
+    >
       <div
         className={`absolute inset-x-0 top-0 h-32 bg-gradient-to-b ${accentClasses[accent]}`}
       />
       <div className="relative">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col items-start gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-400">
               {eyebrow}
             </p>
-            <h2 className="mt-3 text-2xl font-semibold text-white">{title}</h2>
+            <h2 className="mt-3 text-xl font-semibold text-white sm:text-2xl">{title}</h2>
           </div>
           {badge}
         </div>
-        <p className="mt-3 max-w-md text-sm leading-6 text-slate-300">{description}</p>
+        <p className="mt-3 max-w-md text-sm leading-6 text-slate-300 sm:text-[15px]">
+          {description}
+        </p>
         <div className="mt-6">{children}</div>
         {footer ? <div className="mt-6">{footer}</div> : null}
       </div>
