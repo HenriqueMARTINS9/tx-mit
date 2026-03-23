@@ -80,9 +80,13 @@ export function SDKDemo() {
   const playerHostRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<ReturnType<typeof videojs> | null>(null);
   const lastLoggedSecondRef = useRef(-1);
+  const hideUiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasEnded, setHasEnded] = useState(false);
+  const [isPointerOver, setIsPointerOver] = useState(false);
+  const [isTouchUiVisible, setIsTouchUiVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -100,6 +104,22 @@ export function SDKDemo() {
     );
   };
 
+  const clearHideUiTimeout = () => {
+    if (hideUiTimeoutRef.current) {
+      clearTimeout(hideUiTimeoutRef.current);
+      hideUiTimeoutRef.current = null;
+    }
+  };
+
+  const scheduleTouchUiHide = () => {
+    clearHideUiTimeout();
+
+    hideUiTimeoutRef.current = setTimeout(() => {
+      setIsTouchUiVisible(false);
+      hideUiTimeoutRef.current = null;
+    }, 2200);
+  };
+
   useEffect(() => {
     if (!playerHostRef.current || playerRef.current) {
       return;
@@ -114,10 +134,15 @@ export function SDKDemo() {
 
     const handlePlay = () => {
       setIsPlaying(true);
+      setHasEnded(false);
+      if (!isPointerOver) {
+        scheduleTouchUiHide();
+      }
       pushEvent("lecture", `Lecture démarrée à ${formatTime(player.currentTime() ?? 0)}`);
     };
 
     const handlePause = () => {
+      clearHideUiTimeout();
       setIsPlaying(false);
       pushEvent("pause", `Lecture mise en pause à ${formatTime(player.currentTime() ?? 0)}`);
     };
@@ -143,6 +168,14 @@ export function SDKDemo() {
       pushEvent("erreur", error?.message ?? "La lecture a échoué dans le lecteur SDK.");
     };
 
+    const handleEnded = () => {
+      clearHideUiTimeout();
+      setIsPlaying(false);
+      setHasEnded(true);
+      setIsTouchUiVisible(true);
+      pushEvent("terminé", "La vidéo est arrivée à la fin.");
+    };
+
     player.ready(() => {
       setIsReady(true);
       syncDuration();
@@ -153,9 +186,11 @@ export function SDKDemo() {
     player.on("timeupdate", handleTimeUpdate);
     player.on("loadedmetadata", syncDuration);
     player.on("durationchange", syncDuration);
+    player.on("ended", handleEnded);
     player.on("error", handleError);
 
     return () => {
+      clearHideUiTimeout();
       player.dispose();
       playerRef.current = null;
       setIsReady(false);
@@ -191,6 +226,7 @@ export function SDKDemo() {
     }
 
     try {
+      setHasEnded(false);
       await playWithFallback();
     } catch {
       pushEvent("bloqué", "La lecture a été bloquée ou le SDK n'a pas pu se connecter au média.");
@@ -208,8 +244,37 @@ export function SDKDemo() {
       return;
     }
 
+    setHasEnded(false);
     player.currentTime(0);
     void playWithFallback();
+  };
+
+  const handlePointerEnter = () => {
+    clearHideUiTimeout();
+    setIsPointerOver(true);
+  };
+
+  const handlePointerLeave = () => {
+    setIsPointerOver(false);
+  };
+
+  const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
+    if (event.pointerType === "touch" || event.pointerType === "pen") {
+      clearHideUiTimeout();
+      setIsTouchUiVisible(true);
+    }
+  };
+
+  const handlePointerUp: React.PointerEventHandler<HTMLDivElement> = (event) => {
+    if ((event.pointerType === "touch" || event.pointerType === "pen") && isPlaying) {
+      scheduleTouchUiHide();
+    }
+  };
+
+  const handlePointerCancel: React.PointerEventHandler<HTMLDivElement> = (event) => {
+    if (event.pointerType === "touch" || event.pointerType === "pen") {
+      scheduleTouchUiHide();
+    }
   };
 
   const progressPercentage =
@@ -217,6 +282,8 @@ export function SDKDemo() {
   const latestEvent = events[0];
   const statusLabel = isReady ? (isPlaying ? "En lecture" : "En pause") : "Initialisation";
   const eventCountLabel = `${events.length.toString().padStart(2, "0")} événements`;
+  const showPlayerUi =
+    !isReady || !isPlaying || hasEnded || isPointerOver || isTouchUiVisible;
 
   return (
     <SectionCard
@@ -239,34 +306,59 @@ export function SDKDemo() {
         </div>
       }
     >
-      <div className="rounded-[24px] border border-emerald-300/15 bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.18),_transparent_42%),linear-gradient(180deg,rgba(6,78,59,0.16),rgba(2,6,23,0.1))] p-2.5 shadow-[0_18px_50px_rgba(16,185,129,0.14)] sm:rounded-[28px] sm:p-3">
+      <div
+        className="rounded-[24px] border border-emerald-300/15 bg-[radial-gradient(circle_at_top,_rgba(52,211,153,0.18),_transparent_42%),linear-gradient(180deg,rgba(6,78,59,0.16),rgba(2,6,23,0.1))] p-2.5 shadow-[0_18px_50px_rgba(16,185,129,0.14)] sm:rounded-[28px] sm:p-3"
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+      >
         <div className="rounded-[22px] border border-white/10 bg-slate-950/95 p-3 sm:rounded-[24px]">
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">
-                Console SDK
-              </p>
-              <p className="mt-1 text-sm text-white">Lecteur web piloté en JavaScript</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-50">
-                {statusLabel}
-              </span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-300">
-                {eventCountLabel}
-              </span>
+          <div
+            className={`overflow-hidden transition-all duration-200 ${
+              showPlayerUi ? "mb-3 max-h-32 opacity-100" : "mb-0 max-h-0 opacity-0"
+            }`}
+          >
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-400">
+                  Console SDK
+                </p>
+                <p className="mt-1 text-sm text-white">Lecteur web piloté en JavaScript</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-50">
+                  {statusLabel}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-300">
+                  {eventCountLabel}
+                </span>
+              </div>
             </div>
           </div>
 
           <div className="sdk-player relative overflow-hidden rounded-[22px] border border-white/10 bg-black">
             <div ref={playerHostRef} className="aspect-video" />
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.02),rgba(15,23,42,0.18)),radial-gradient(circle_at_top,_rgba(52,211,153,0.1),_transparent_30%)]" />
-            <div className="pointer-events-none absolute left-3 top-3 flex flex-wrap gap-2">
+            <div
+              className={`pointer-events-none absolute inset-0 transition-opacity duration-200 ${
+                showPlayerUi ? "opacity-100" : "opacity-0"
+              } bg-[linear-gradient(180deg,rgba(15,23,42,0.02),rgba(15,23,42,0.18)),radial-gradient(circle_at_top,_rgba(52,211,153,0.1),_transparent_30%)]`}
+            />
+            <div
+              className={`pointer-events-none absolute left-3 top-3 flex flex-wrap gap-2 transition-opacity duration-200 ${
+                showPlayerUi ? "opacity-100" : "opacity-0"
+              }`}
+            >
               <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-100">
                 UI SDK
               </span>
             </div>
-            <div className="pointer-events-none absolute right-3 top-3 hidden items-end gap-1 rounded-full border border-white/10 bg-slate-950/65 px-3 py-2 sm:flex">
+            <div
+              className={`pointer-events-none absolute right-3 top-3 hidden items-end gap-1 rounded-full border border-white/10 bg-slate-950/65 px-3 py-2 transition-opacity duration-200 sm:flex ${
+                showPlayerUi ? "opacity-100" : "opacity-0"
+              }`}
+            >
               {equalizerBars.map((bar) => (
                 <span
                   key={bar}
@@ -275,7 +367,11 @@ export function SDKDemo() {
                 />
               ))}
             </div>
-            <div className="pointer-events-none absolute inset-x-2 bottom-2 rounded-[16px] border border-white/10 bg-slate-950/65 px-3 py-2 backdrop-blur">
+            <div
+              className={`pointer-events-none absolute inset-x-2 bottom-2 rounded-[16px] border border-white/10 bg-slate-950/65 px-3 py-2 backdrop-blur transition-all duration-200 ${
+                showPlayerUi ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+              }`}
+            >
               <div className="flex items-center justify-between gap-3 text-[11px] font-medium uppercase tracking-[0.2em] text-slate-200">
                 <span>Progression</span>
                 <span className="text-slate-100">
@@ -291,39 +387,47 @@ export function SDKDemo() {
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            <ControlButton
-              label="Lecture"
-              onClick={() => void playVideo()}
-              disabled={!isReady}
-              tone="primary"
-            />
-            <ControlButton label="Pause" onClick={pauseVideo} disabled={!isReady} />
-            <ControlButton label="Rejouer" onClick={restartVideo} disabled={!isReady} />
-          </div>
+          <div
+            className={`overflow-hidden transition-all duration-200 ${
+              showPlayerUi ? "mt-3 max-h-[420px] opacity-100" : "mt-0 max-h-0 opacity-0"
+            }`}
+          >
+            <div className="grid grid-cols-3 gap-2">
+              <ControlButton
+                label="Lecture"
+                onClick={() => void playVideo()}
+                disabled={!isReady}
+                tone="primary"
+              />
+              <ControlButton label="Pause" onClick={pauseVideo} disabled={!isReady} />
+              <ControlButton label="Rejouer" onClick={restartVideo} disabled={!isReady} />
+            </div>
 
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                État
-              </span>
-              <span className="mt-1 block text-sm font-semibold text-white">{statusLabel}</span>
-            </div>
-            <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                Temps
-              </span>
-              <span className="mt-1 block text-sm font-semibold text-white">
-                {formatTime(currentTime)}
-              </span>
-            </div>
-            <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                Durée
-              </span>
-              <span className="mt-1 block text-sm font-semibold text-white">
-                {formatTime(duration)}
-              </span>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                  État
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-white">
+                  {statusLabel}
+                </span>
+              </div>
+              <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                  Temps
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-white">
+                  {formatTime(currentTime)}
+                </span>
+              </div>
+              <div className="rounded-[16px] border border-white/10 bg-slate-950/70 px-3 py-3">
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                  Durée
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-white">
+                  {formatTime(duration)}
+                </span>
+              </div>
             </div>
           </div>
         </div>
